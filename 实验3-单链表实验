@@ -1,0 +1,335 @@
+##实验3-单链表实验
+
+
+
+```cpp
+	
+#include <iostream>
+#include <stdio.h>
+#include <conio.h>
+#include <malloc.h>
+using namespace std;
+
+typedef int ElemType;
+
+
+typedef struct LNode
+{
+	ElemType data;
+	struct LNode *next;
+} LNode, *LinkList;
+
+//取单链表的长度
+int ListLength(LinkList h)
+{
+	LinkList p;
+	p = h;
+	int j = 0;
+	while (p->next != NULL)
+	{
+		p = p->next;
+		j++;
+	}
+	return j;
+}
+
+//插入单链表
+int InsList(LinkList h, int i, ElemType e)
+{
+	LinkList pre, s;
+	int  j = 0;
+	pre = h;
+	int m = ListLength(h);
+	if (i<1 || i>m + 1)
+	{
+		cout << "插入位置不合理!" << endl;
+		return  0;
+	}
+	while (j < i - 1)
+	{
+		pre = pre->next;
+		j = j + 1;
+	}
+	s = (LNode*)malloc(sizeof(LNode));
+	s->data = e;
+	s->next = pre->next;
+	pre->next = s;
+	return 1;
+}
+
+//第三题
+void DivideLIst(LinkList h, LinkList b, LinkList c)
+{
+	LinkList p;
+	p = h->next;
+	while (p != NULL)
+	{
+		if (p->data % 2 == 0) {
+			InsList(b, ListLength(b) + 1, p->data);
+		}
+		else
+		{
+			InsList(c, ListLength(c) + 1, p->data);
+		}
+		p = p->next;
+	}
+}
+
+//创建单链表
+LinkList CreateListFromTail(int n)
+{
+	LinkList  h, s, p;
+	int i;
+	h = (LNode*)malloc(sizeof(LNode));
+	h->next = NULL;
+	p = h;
+	for (i = 1; i <= n; i++)
+	{
+		s = (LNode*)malloc(sizeof(LNode));
+		cout << "输入单链表的第" << i << "个元素的值：";
+		cin >> s->data;
+		p->next = s;
+		p = s;
+	}
+	p->next = NULL;
+	return h;
+}
+
+//输出单链表
+void ListTra(LinkList h)
+{
+	LinkList p;
+	p = h->next;
+	while (p != NULL)
+	{
+		cout << p->data << ',';
+		p = p->next;
+	}
+	cout << endl;
+}
+//删除单链表中的结点
+int DelList(LinkList h, int i, ElemType *e)
+{
+	LinkList pre, r; 	pre = h;
+	int j = 0;
+	int m = ListLength(h);
+	if (i<1 || i>m)
+	{
+		cout << "删除位置不合法!" << endl;
+		return(0);
+	}
+	while (j < i - 1)
+	{
+		pre = pre->next;
+		j = j + 1;
+	}
+	r = pre->next;
+	pre->next = r->next;
+	*e = r->data;
+	free(r);
+	return 1;
+}
+
+//按序号查找元素
+LinkList Get(LinkList h, int i)
+{
+	int m;
+	m = ListLength(h);
+	LinkList p;
+	p = h;
+	int j = 0;
+	if (i<1 || i>m)
+		return  NULL;
+	while (j<i)
+	{
+		p = p->next;
+		j++;
+	}
+	return p;
+}
+
+//按序号查找元素的值,成功返回1，失败返回0
+int GetData(LinkList h, int i, ElemType *data)
+{
+	LinkList a = Get(h, i);
+	if (a == NULL) {
+		return 0;
+	}
+	*data = a->data;
+	return 1;
+}
+
+//按值查找元素的序号，没有该值返回0
+int Locate(LinkList h, ElemType e)
+{
+	LinkList p;
+	p = h->next;
+	int j = 1;
+	while (p != NULL)
+	{
+		if (p->data == e) break;
+		else
+		{
+			p = p->next;
+			j++;
+		}
+	}
+	if (p == NULL)  return 0;
+	else return j;
+}
+
+//------------以下是第二题的代码------------
+//删除单链表中的重复结点
+void DelList(LinkList h) 
+{
+	LinkList p, q, r;
+	p = h->next;
+	while (p != NULL)
+	{
+		q = p->next;
+		r = p;
+		while (q != NULL)
+		{
+			if (q->data == p->data)
+			{
+				r->next = q->next;
+				free(q);
+				q = r->next;
+			}
+			else
+			{
+				r = q;
+				q = q->next;
+			}
+		}
+		p = p->next;
+	}
+}
+//------------以下是第二题的代码------------
+int main()
+{
+	int n, option, address, data, k, i;
+	LinkList h, b, c;
+	
+	cout << "**************创建两个新链表****************" << endl;
+	cout << "要创建新链表的长度：" << endl;
+	cin >> n;
+	h = CreateListFromTail(n);
+	b = CreateListFromTail(0);
+	c = CreateListFromTail(0);
+
+
+	cout << endl;
+	cout << "********************" << endl;
+	cout << " 1.插入元素" << endl;
+	cout << " 2.删除元素" << endl;
+	cout << " 3.按序号查找" << endl;
+	cout << " 4.按值查找元素" << endl;
+	cout << " 5.输出顺序表" << endl;
+	cout << " 6.第二题：删除重复的结点" << endl;
+	cout << " 7.第三题" << endl;
+	cout << " 0.退出" << endl;
+	cout << "********************" << endl;
+
+	while (1)
+	{
+		cout << "---------------------------------------- " << endl;
+
+		cout << " 选择你要的操作 (0 - 7): ";
+
+		option = getche();
+		cout << endl;
+
+		switch (option)
+		{
+		case '1':
+			cout << "***************插入元素***************" << endl;
+			cout << "输入要插入的元素的值:" << endl;
+			cin >> data;
+
+			cout << "输入要插入的元素的位置:" << endl;
+			cin >> address;
+
+			k = InsList(h, address, data);	//调用InsList插入函数为链表再指定位置插入值
+			if (k == 1)
+			{
+				cout << "插入成功，插入元素后的顺序表是：" << endl;
+				ListTra(h);	//调用ListTra函数输出链表的所有元素的值
+			}
+			else
+			{
+				cout << "插入失败!" << endl;
+			}
+			break;
+		case '2':
+			cout << "***************删除元素***************" << endl;
+			cout << "输入要删除的元素的位置:" << endl;
+			cin >> i;
+
+			k = DelList(h, i, &data);	//调用DelList删除函数为链表删除指定位置的值
+			if (k == 1)
+			{
+				cout << "删除成功，" << i << "号元素的值为:" << data << ",已被删除,删除后新的顺序表为:" << endl;
+				ListTra(h);
+			}
+			else
+			{
+				cout << "删除失败!" << endl;
+			}
+			break;
+		case '3':
+			cout << "输入要查找的元素的序号:" << endl;
+			cin >> i;
+			k = GetData(h, i, &data);
+
+			if (k == 0)
+			{
+				cout << "要查找的元素的序号输入不合理，查找元素失败。" << endl;
+			}
+			else
+			{
+				cout << "查找成功，" << i << "号元素的值为:" << data << endl;
+			}
+			break;
+		case '4':
+			cout << "输入要查找的元素的值:" << endl;
+			cin >> data;
+			k = Locate(h, data);
+
+			if (k == 0)
+			{
+				cout << "要查找的元素的在顺序表中不存在" << endl;
+			}
+			else
+			{
+				cout << "查找成功，值为：" << data << "的元素在" << k << "号位置" << endl;
+			}
+			break;
+		case '5':
+			cout << "***************输出单链表***************" << endl;
+			ListTra(h);
+			break;
+		case '6':
+			cout << "***************删除单链表中重复的值***************" << endl;
+			DelList(h);
+			ListTra(h);
+			break;
+		case '7':
+			cout << "***************将单链表的结点按照奇偶重排**************" << endl;
+			DivideLIst(h, b, c);
+			ListTra(b);
+			ListTra(c);
+			break;
+		case '0':
+			return 0;
+			break;
+		}
+	}
+
+	cout << "按任意键退出";
+	getche();
+
+	return 0;
+}
+	
+```
