@@ -1,0 +1,156 @@
+## 实验5-栈的表示和实现
+
+### 顺序栈的进栈和出栈函数
+
+```cpp
+//进栈操作
+int Push(SeqStack *S, ElemType e)
+{
+	if (S->top == MAXSIZE - 1)  return 0;	/*栈已满*/
+	S->top++;	/*栈顶位置上移*/
+	S->elem[S->top] = e;
+	return 1;
+}
+
+//出栈操作
+int Pop(SeqStack * S, ElemType *e)
+{  
+	/* 将栈S的栈顶元素取出， 放到e所指的存储空间中 */
+	if (S->top == -1)   /*栈为空*/
+		return 0;
+	else
+	{
+		*e = S->elem[S->top];
+		S->top--;	/* 修改栈顶指针 */
+		return 1;
+	}
+}
+```
+
+### 顺序栈（使用动态分配数组）的进栈和出栈函数
+```cpp
+//进栈操作
+int Push(SeqStack *S, ElemType e)
+{
+	if (S->top >= S->stacksize - 1) 
+	{
+		S->base = (ElemType*)realloc(S->base, (S->stacksize + 1) * sizeof(ElemType));
+		S->stacksize++;
+	}
+	S->top++;   /*栈顶位置上移*/
+	S->base[S->top] = e;
+	return 1;
+}
+//出栈操作
+int Pop(SeqStack *S, ElemType *e)
+{
+	if (S->top == -1)   /*栈为空*/
+		return 0;
+	else
+	{
+		*e = S->base[S->top];
+		S->top--;	/* 修改栈顶指针 */
+		return 1;
+	}
+}
+```
+
+### 链栈
+```cpp
+//进栈操作
+int Push(LinkStack top, ElemType  e)
+{
+	LinkStack  s;
+	s = (LSNode *)malloc(sizeof(LSNode));
+	if (s == NULL)  return  0;
+	/*  申请新结点失败，返回错误标志 */
+	s->data = e;
+	s->next = top->next;
+	top->next = s;
+	return 1;
+}
+//出栈操作
+int Pop(LinkStack top, ElemType  *e)
+{
+	LinkStack  p;
+	if (top->next == NULL)	return 0;
+	/*  栈空删除失败，返回错误标志 */
+	p = top->next;
+	*e = p->data;	/*  取栈顶元素  */
+	top->next = p->next;
+	free(p);
+	return 1;
+}
+
+```
+
+
+### 设两个栈S1和S2以顺序方式共同存储在数组a[MAX]中，栈底分别固定在数组的两端，使它们迎面增长。进栈、出栈、显示各栈当前元素函数的源代码如下：
+```cpp
+//进栈操作
+int Push(SeqStack *S, ElemType e, int i)
+{
+	if (S->top1 == S->top2 - 1)
+		return 0;	/*栈已满*/
+	switch (i)
+	{
+	case 1:
+		S->top1++;	/*栈顶位置上移*/
+		S->elem[S->top1] = e;
+		return 1;				/*取值成功，返回1*/
+	case 2:
+		S->top2--;	/*栈顶位置上移*/
+		S->elem[S->top2] = e;
+		return 1;				/*取值成功，返回1*/
+	default:
+		return 0;
+	}
+}
+
+//出栈操作
+int Pop(SeqStack *S, ElemType *e, int i)
+{
+	switch (i)
+	{
+	case 1:
+		if (S->top1 == -1)   /*栈1为空*/
+			return 0;
+		else
+		{
+			*e = S->elem[S->top1];
+			S->top1--;	/* 修改栈顶指针 */
+			return 1;
+		}
+	case 2:
+		if (S->top2 == MAXSIZE)   /*栈2为空*/
+			return 0;
+		else
+		{
+			*e = S->elem[S->top2];
+			S->top2++;	/* 修改栈顶指针 */
+			return 1;
+		}			/*取值成功，返回1*/
+	default:
+		return 0;
+	}
+
+}
+
+//输出栈操作
+void Liststack(SeqStack *S, int i)
+{
+	int j;
+	switch (i)
+	{
+	case 1:
+		for (j = S->top1; j >= 0; j--)
+			cout << S->elem[j] << ",";
+	case 2:
+		for (j = S->top2; j < MAXSIZE; j++)
+			cout << S->elem[j] << ",";
+	}
+
+}
+```
+
+
