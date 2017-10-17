@@ -1,0 +1,140 @@
+## 实验6-队列的表示和实现
+
+### 1、分别按下述方式完成循环队列q[MAX]的进、出队算法设计
+#### 1）将习题2.3-13中的程序改为仅用首指针first指向当前队列中的首元素，不用尾指针。进队、出队函数的源代码如下：
+
+```cpp
+//x进队函数
+int addq(int q[],int first,int &count,int x)
+{
+    if(count==MAX)
+        return 0;
+	count++;
+    q[(first+count)%MAX-1] = x;
+    /*
+    或：
+    int last= (first+count)%MAX-1；
+    q[last] = x;
+    */
+	return 1;
+}
+//x出队函数
+int delq(int q[],int &first,int &count,int &x)
+{
+    if(count==0) 
+        return 0;
+    x=q[first];
+    first=(first+1)%MAX;
+	count--;
+	return 1;
+}
+```
+
+#### 2）将算法2-16改为首指针后置法。进队、出队函数的源代码如下：
+```cpp
+//x进队函数
+int addq(int q[],int first,int &last,int x)
+{
+    if((last+1)%MAX==first)
+        return FAIL;
+    last=(last+1)%MAX;
+    q[last] = x;
+	return SUCC;
+}
+//x出队函数
+int delq(int q[],int &first,int last,int &x)
+{
+    if(first==last) 
+        return FAIL;
+    first=(first+1)%MAX;
+    x=q[first];
+	return SUCC;
+}
+```
+#### 3）将算法2-16改为首指针后置法。进队、出队函数的源代码如下：
+```cpp
+//x进队函数
+int addq(int q[],int first,int &last,int &count,int x)
+{
+    if(count==MAX)
+        return FAIL;
+    q[last] = x;
+    last=(last+1)%MAX;
+    count++;
+	return SUCC;
+}
+//x出队函数
+int delq(int q[],int &first,int last,int &count,int &x)
+{
+    if(count==0) 
+        return FAIL;
+    x=q[first];
+    first=(first+1)%MAX;
+	count--;
+	return SUCC;
+}
+```
+#### 4）将算法2-16改为首指针后置法。进队、出队函数的源代码如下：
+```cpp
+//x进队函数
+int addq(int q[],int first,int &last,int &flag,int x)
+{
+    if(first==last&&flag==1)
+        return FAIL;//队满
+    q[last] = x;
+    last=(last+1)%MAX;
+    flag=1;
+	return SUCC;
+}
+//x出队函数
+int delq(int q[],int &first,int last,int &flag,int &x)
+{
+    if(first==last&&flag==0) 
+        return FAIL;//队满
+    x=q[first];
+    first=(first+1)%MAX;
+	flag=0;
+	return SUCC;
+}
+```
+
+### 2、用带头结点单向链表存储列队，设队尾指针last，设队首指针first。实现链队列的各种基本运算。进队、出队函数的源代码如下：
+```cpp
+//进队操作
+int Enterqueue(LinkQueue *q,ElemType e)
+{
+    LinkQueueNode *r;
+    r=new LinkQueueNode;
+    if (r==NULL)
+    {
+        return 0;
+    }
+    else
+    {
+		r->data=e;
+		r->next=NULL;/*新结点成员赋值*/
+        q->last->next=r;
+        q->last=r;
+        return 1;
+    } 
+}
+//出队操作
+int Deletequeue(LinkQueue *q,ElemType *e)
+{
+	LinkQueueNode *r;
+	if (q->first==q->last)
+		  return 0;	//空队列
+	r=q->first->next;	//找到要删除的元素
+	q->first->next=r->next;  	//重新链接q的队头元素
+	if (r->next == NULL)    
+		q->last=q->first;//若要删除的为队尾元素,即删除后队列为空,则修改尾指针last
+	*e=r->data;	//带回被删除元素的值
+	delete(r); 	//删除该元素
+	return 1;
+}
+```
+### 3、用单向循环链表存储列队，只设队尾指针last，不设队首指针。进队、出队、显示当前队所有元素函数的源代码如下：
+```cpp
+
+
+```
