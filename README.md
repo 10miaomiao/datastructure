@@ -4,3 +4,4 @@
 * [实验4-线性表实验](https://github.com/xiaoeflyye/datastructure/blob/master/%E5%AE%9E%E9%AA%8C4-%E7%BA%BF%E6%80%A7%E8%A1%A8%E5%AE%9E%E9%AA%8C.md)
 * [实验5-栈的表示和实现](https://github.com/xiaoeflyye/datastructure/blob/master/%E5%AE%9E%E9%AA%8C5-%E6%A0%88%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%AE%9E%E7%8E%B0.md)
 * [实验6-队列的表示和实现](https://github.com/xiaoeflyye/datastructure/blob/master/%E5%AE%9E%E9%AA%8C6-%E9%98%9F%E5%88%97%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%AE%9E%E7%8E%B0.md)
+* [实验7-矩阵的压缩存储](https://github.com/xiaoeflyye/datastructure/blob/master/%E5%AE%9E%E9%AA%8C7-%E7%9F%A9%E9%98%B5%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%AD%98%E5%82%A8.md)
