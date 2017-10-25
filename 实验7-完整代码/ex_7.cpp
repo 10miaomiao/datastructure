@@ -96,13 +96,12 @@ void _trans(table *ta,table *tb)
     }
     for (i=0;i<ta->len;i++) 	/*将三元组表ta扫描一遍，对于其中列号为k的元素，给相应的num[k]加1。*/
     {	
-        num[ta->data[i].col]++;	
+        num[ta->data[i].col]++;
     }
     pot[0]=0;
     for (k=1;k<ta->cnum;k++)	 /*计算pot[  ]各数组元素的值*/
     {	
         pot[k]=pot[k-1]+num[k-1];
-        cout<<pot[k]<<",";	
     }
     for (p=0;p<ta->len;p++) 
     {	
