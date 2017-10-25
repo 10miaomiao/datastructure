@@ -58,18 +58,25 @@ void print(table *m)
     }
 }
 
-//稀疏矩阵转置(互换行列号）
+//稀疏矩阵转置(普通转置）
 void trans(table *ta,table *tb)
 {	
-    int i;    	 	 
+    int k,p,q;    	 	 
     tb->rnum=ta->cnum;
     tb->cnum=ta->rnum;
     tb->len=ta->len;
-    for (i=0;i<ta->len;i++) 
-    {	
-        tb->data[i].row=ta->data[i].col;
-        tb->data[i].col=ta->data[i].row;
-        tb->data[i].val=ta->data[i].val;
+    q=0;	/*q为tb->data的下标*/
+    if (tb->len!=0) 
+    {   
+        for (k=0;k<ta->cnum;k++) 	
+            for (p=0;p<ta->len;p++)  /*p为ta->data的下标*/
+                if (ta->data[p].col==k) 
+                {	  
+                    tb->data[q].row=ta->data[p].col;
+                    tb->data[q].col=ta->data[p].row;
+                    tb->data[q].val=ta->data[p].val;
+                    q++;
+                }
     }
 }
 
