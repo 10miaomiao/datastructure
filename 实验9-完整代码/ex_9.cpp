@@ -4,10 +4,10 @@ using namespace std;
 
 typedef char ElemType;
 //二叉树的定义
-typedef struct Node     //结点结构
+typedef struct BNode     //结点结构
 {
     ElemType data;
-    struct Node *lchild, *rchild;
+    struct BNode *lchild, *rchild;
 }BNode,*BiTree;    //结点类型别名和指针类型别名
 
 
@@ -45,7 +45,7 @@ void InOrder(BiTree T)
     else 
     {
         InOrder(T->lchild); //前序递归遍历根结点T的左子树
-        cout<<T->data; //访问根结点T的数据域
+        cout<<T->data; //访问根结点T的数c据域
         InOrder(T->rchild); //前序递归遍历根结点T的右子树  
     }
 }
